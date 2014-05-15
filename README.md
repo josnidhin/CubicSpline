@@ -1,3 +1,5 @@
+[Algorithm from Wiki](http://en.wikipedia.org/w/index.php?title=Spline_%28mathematics%29&oldid=288288033#Algorithm_for_computing_natural_cubic_splines)
+
 Input: set of coordinates C, with |C| = n+1
 
 Output: set splines which is composed of n 5-tuples.
