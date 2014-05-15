@@ -23,7 +23,7 @@ CubicSpline::~CubicSpline()
 }
 
 /**
- *
+ * Uses the algorithm given in wiki page
  */
 void CubicSpline::Initialize(float * srcX, float * srcY, int size)
 {
@@ -35,8 +35,9 @@ void CubicSpline::Initialize(float * srcX, float * srcY, int size)
 	m_C = new float[size];
 	m_D = new float[size];
 
-	float * H = new float[size];
-	float * alpha = new float[size];
+	float * H = new float[size-1];
+	float * alpha = new float[size-1];
+
 	float * L = new float[size];
 	float * U = new float[size];
 	float * Z = new float[size];
@@ -49,7 +50,8 @@ void CubicSpline::Initialize(float * srcX, float * srcY, int size)
 		alpha[i-1] = (3.0f / H[i] * (srcY[i + 1] - srcY[i])) - (3.0f / H[i - 1] * (srcY[i] - srcY[i - 1]));
 	}
 
-	L[0] = U[0] = Z[0] = 0.0f;
+	L[0] = 1;
+	U[0] = Z[0] = 0.0f;
 
 	for (int i = 1; i < size - 1; i++) {
 		L[i] = (2.0f * (srcX[i + 1] - srcX[i - 1])) - (H[i - 1] * U[i - 1]);
@@ -57,8 +59,7 @@ void CubicSpline::Initialize(float * srcX, float * srcY, int size)
 		Z[i] = (alpha[i-1] - (H[i - 1] * Z[i - 1])) / L[i];
 	}
 
-	Z[size - 1] = 0.0f;
-	m_C[size - 1] = 0.0f;
+	Z[size - 1] = m_C[size - 1] = 0.0f;
 
 	for (int i = size - 2; i >= 0; i--) {
 		m_C[i] = Z[i] - (U[i] * m_C[i + 1]);
