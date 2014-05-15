@@ -16,12 +16,12 @@ public:
 	~CubicSpline();
 
 	void Initialize(float * srcX, float * srcY, int size);
-	float GetY(float x);
+	float Interpolate(float x);
 
 private:
-	float *m_arrayB, *m_arrayC, *m_arrayD, *m_arrayX, *m_arrayY;
+	float *m_B, *m_C, *m_D, *m_X, *m_Y;
 	int m_size;
 
-	int Bisection(float x);
+	int GetIndex(float x);
 	float Interpolate(float x, int index);
 };

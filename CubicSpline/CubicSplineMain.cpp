@@ -1,5 +1,7 @@
-// CubicSpline.cpp : Defines the entry point for the console application.
-//
+/** 
+ * @author Jose Davis Nidhin
+ * @desc Defines the entry point for the console application.
+ */
 #include "stdafx.h"
 
 #include <iostream>
@@ -18,7 +20,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	cs.Initialize(x1, y1, size);
 
 	for (float i = 0.0f; i < 5.0f; i += 0.1f) {
-		cout << i << ", " << cs.GetY(i) << std::endl;
+		cout << i << ", " << cs.Interpolate(i) << std::endl;
 	}
 
 	cout << "Press any key to exit...";
