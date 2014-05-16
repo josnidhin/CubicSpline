@@ -17,13 +17,11 @@ CubicSpline::CubicSpline()
  */
 CubicSpline::~CubicSpline()
 {
-	delete[] m_B;
-	delete[] m_C;
-	delete[] m_D;
+	Reset();
 }
 
 /**
- * Uses the algorithm given in wiki page
+ * Uses the algorithm described the read me file
  */
 void CubicSpline::Initialize(float * srcX, float * srcY, int size)
 {
@@ -31,16 +29,18 @@ void CubicSpline::Initialize(float * srcX, float * srcY, int size)
 	m_Y = srcY;
 	m_size = size;
 
-	m_B = new float[size];
+	Reset();
+
+	m_B = new float[size-1];
 	m_C = new float[size];
-	m_D = new float[size];
+	m_D = new float[size-1];
 
 	float * H = new float[size-1];
-	float * alpha = new float[size-1];
+	float * alpha = new float[size-2];
 
-	float * L = new float[size];
-	float * U = new float[size];
-	float * Z = new float[size];
+	float * L = new float[size-2];
+	float * U = new float[size-1];
+	float * Z = new float[size-1];
 
 	for (int i = 0; i < size - 1; i++) {
 		H[i] = srcX[i + 1] - srcX[i];
@@ -50,16 +50,15 @@ void CubicSpline::Initialize(float * srcX, float * srcY, int size)
 		alpha[i-1] = (3.0f / H[i] * (srcY[i + 1] - srcY[i])) - (3.0f / H[i - 1] * (srcY[i] - srcY[i - 1]));
 	}
 
-	L[0] = 1;
 	U[0] = Z[0] = 0.0f;
 
 	for (int i = 1; i < size - 1; i++) {
-		L[i] = (2.0f * (srcX[i + 1] - srcX[i - 1])) - (H[i - 1] * U[i - 1]);
-		U[i] = H[i] / L[i];
-		Z[i] = (alpha[i-1] - (H[i - 1] * Z[i - 1])) / L[i];
+		L[i-1] = (2.0f * (srcX[i + 1] - srcX[i - 1])) - (H[i - 1] * U[i - 1]);
+		U[i] = H[i] / L[i-1];
+		Z[i] = (alpha[i-1] - (H[i - 1] * Z[i - 1])) / L[i-1];
 	}
 
-	Z[size - 1] = m_C[size - 1] = 0.0f;
+	m_C[size - 1] = 0.0f;
 
 	for (int i = size - 2; i >= 0; i--) {
 		m_C[i] = Z[i] - (U[i] * m_C[i + 1]);
@@ -83,6 +82,10 @@ float CubicSpline::Interpolate(float x)
 
 	return Interpolate(x, index);
 }
+
+/**
+ * Private Function
+ */
 
 /**
  *
@@ -118,4 +121,14 @@ float CubicSpline::Interpolate(float x, int index)
 		m_D[index] * pow((x - m_X[index]), 3);
 
 	return y;
+}
+
+/**
+ *
+ */
+void CubicSpline::Reset()
+{
+	delete[] m_B;
+	delete[] m_C;
+	delete[] m_D;
 }

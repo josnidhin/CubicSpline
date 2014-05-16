@@ -24,4 +24,5 @@ private:
 
 	int GetIndex(float x);
 	float Interpolate(float x, int index);
+	void Reset();
 };

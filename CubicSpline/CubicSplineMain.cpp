@@ -13,7 +13,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	CubicSpline cs;
 
-	float x1[] = { 0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f };
+	float x1[] = { 0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f};
 	float y1[] = { 0.0f, 100.0f, 50.0f, 100.0f, 50.0f, 200.0f };
 	int size = 6;
 
